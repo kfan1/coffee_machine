@@ -49,10 +49,11 @@ def coffeemach(water, milk, coffee, money):
     name = input("What is your name? ")
     choice = input(f"Good morning {name}. What would you like today? ").lower()
     choice = choice[:3]
-    if choice != "esp" and choice != "lat" and choice != "cap" and choice != "rep":
+    while choice != "esp" and choice != "lat" and choice != "cap" and choice != "rep":
         print("Not an option")
-        coffeemach(water, milk, coffee, money)
-    elif choice == "rep":
+        choice = input("What would you like today? ").lower()
+        choice = choice[:3]
+    if choice == "rep":
         print(f"Water: {water}ml\nMilk: {milk}ml\nCoffee: {coffee}g\nMoney: ${money}")
     else:
         water -= water_used(choice)
@@ -91,5 +92,3 @@ def coffeemach(water, milk, coffee, money):
         return "off"
     else:
         coffeemach(water, milk, coffee, money)
-        
-        
