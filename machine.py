@@ -1,5 +1,6 @@
 import data
 
+
 def water_used(cof):
     if cof == "esp":
         return data.MENU["espresso"]["ingredients"]["water"]
@@ -7,6 +8,7 @@ def water_used(cof):
         return data.MENU["latte"]["ingredients"]["water"]
     if cof == "cap":
         return data.MENU["cappuccino"]["ingredients"]["water"]
+
 
 def coffee_used(cof):
     if cof == "esp":
@@ -16,6 +18,7 @@ def coffee_used(cof):
     if cof == "cap":
         return data.MENU["cappuccino"]["ingredients"]["coffee"]
 
+
 def milk_used(cof):
     if cof == "esp":
         return 0
@@ -23,6 +26,7 @@ def milk_used(cof):
         return data.MENU["latte"]["ingredients"]["milk"]
     if cof == "cap":
         return data.MENU["cappuccino"]["ingredients"]["milk"]
+
 
 def cost_needed(cof):
     if cof == "esp":
@@ -32,12 +36,13 @@ def cost_needed(cof):
     if cof == "cap":
         return data.MENU["cappuccino"]["cost"]
 
+
 def ask_for_money():
     q = int(input("Please insert quarters: "))
     d = int(input("Please insert dimes: "))
     n = int(input("Please insert nickles: "))
     p = int(input("Please insert pennies: "))
-    return round(q*0.25+d*0.1+n*0.05+p*0.01, 2)
+    return round(q * 0.25 + d * 0.1 + n * 0.05 + p * 0.01, 2)
 
 
 def coffeemach(water, milk, coffee, money):
@@ -50,26 +55,29 @@ def coffeemach(water, milk, coffee, money):
     elif choice == "rep":
         print(f"Water: {water}ml\nMilk: {milk}ml\nCoffee: {coffee}g\nMoney: ${money}")
     else:
-        print(f"You need ${cost_needed(choice)}")
-        money_input = ask_for_money()
-        if money_input < cost_needed(choice):
-            print(f"Sorry, you do not have enough money. ${money_input} refunded.")
+        water -= water_used(choice)
+        milk -= milk_used(choice)
+        coffee -= coffee_used(choice)
+        if water < 0:
+            print(f"Sorry, not enough water.")
+            water += water_used(choice)
+            coffee += coffee_used(choice)
+            milk += milk_used(choice)
+        elif coffee < 0:
+            print(f"Sorry, not enough coffee.")
+            coffee += coffee_used(choice)
+            water += water_used(choice)
+            milk += milk_used(choice)
+        elif milk < 0:
+            print(f"Sorry, not enough milk.")
+            milk += milk_used(choice)
+            coffee += coffee_used(choice)
+            water += water_used(choice)
         else:
-            water -= water_used(choice)
-            milk -= milk_used(choice)
-            coffee -= coffee_used(choice)
-            if water < 0:
-                print(f"Sorry, not enough water. ${money_input} refunded.")
-                water += water_used(choice)
-                coffee += coffee_used(choice)
-                milk += milk_used(choice)
-            elif coffee < 0:
-                print(f"Sorry, not enough coffee. ${money_input} refunded.")
-                coffee += coffee_used(choice)
-                water += water_used(choice)
-                milk += milk_used(choice)
-            elif milk < 0:
-                print(f"Sorry, not enough milk. ${money_input} refunded.")
+            print(f"You need ${cost_needed(choice)}")
+            money_input = ask_for_money()
+            if money_input < cost_needed(choice):
+                print(f"Sorry, you do not have enough money. ${money_input} refunded.")
                 milk += milk_used(choice)
                 coffee += coffee_used(choice)
                 water += water_used(choice)
@@ -83,5 +91,5 @@ def coffeemach(water, milk, coffee, money):
         return "off"
     else:
         coffeemach(water, milk, coffee, money)
-
-
+        
+        
