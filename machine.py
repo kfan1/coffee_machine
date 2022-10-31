@@ -59,35 +59,23 @@ def coffeemach(water, milk, coffee, money):
             return "off"
     if choice == "rep":
         print(f"Water: {water}ml\nMilk: {milk}ml\nCoffee: {coffee}g\nMoney: ${money}")
-    else:
-        water -= water_used(choice)
-        milk -= milk_used(choice)
-        coffee -= coffee_used(choice)
-        if water < 0:
+    else:        
+        if water < water_used(choice):
             print(f"Sorry, not enough water.")
-            water += water_used(choice)
-            coffee += coffee_used(choice)
-            milk += milk_used(choice)
-        elif coffee < 0:
+        elif coffee < coffee_used(choice):
             print(f"Sorry, not enough coffee.")
-            coffee += coffee_used(choice)
-            water += water_used(choice)
-            milk += milk_used(choice)
-        elif milk < 0:
+        elif milk < milk_used(choice):
             print(f"Sorry, not enough milk.")
-            milk += milk_used(choice)
-            coffee += coffee_used(choice)
-            water += water_used(choice)
         else:
             print(f"You need ${cost_needed(choice)}")
             money_input = ask_for_money()
             if money_input < cost_needed(choice):
-                print(f"Sorry, you do not have enough money. ${money_input} refunded.")
-                milk += milk_used(choice)
-                coffee += coffee_used(choice)
-                water += water_used(choice)
+                print(f"Sorry, you do not have enough money. ${money_input} refunded.")     
             else:
                 money += cost_needed(choice)
+                water -= water_used(choice)
+                milk -= milk_used(choice)
+                coffee -= coffee_used(choice)
                 change = round(money_input - cost_needed(choice), 2)
                 print(f"Enjoy your ☕. Your change is ${change}")
     power = input("Press enter to continue type 'off' to turn off: ")
